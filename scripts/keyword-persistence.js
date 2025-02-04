@@ -26,3 +26,25 @@ saveButton.addEventListener('click', function saveKeywords() {
         return keywords;
     }
 });
+
+// Keyword Loading Logic
+function loadKeywords() {
+    chrome.storage.local
+        .get(['titleKeywords', 'channelNameKeywords'])
+        .then((result) => {
+            addKeywordsToEntry(result.titleKeywords, titleKeywordEntry);
+            addKeywordsToEntry(result.channelNameKeywords, channelNameKeywordEntry);
+        });
+
+    function addKeywordsToEntry(keywords, entry) {
+        for (let i = 0; i < keywords.length; i++) {
+            entry.value += keywords[i];
+            if (i < keywords.length - 1) {
+                entry.value += ', ';
+            }
+        }
+    }
+}
+
+// Main Logic
+loadKeywords();
