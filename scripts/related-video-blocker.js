@@ -1,11 +1,13 @@
 // Keyword Loading Logic
 let titleKeywords = [];
+let channelNameKeywords = [];
 
 function loadKeywords() {
     chrome.storage.local
-        .get(['titleKeywords'])
+        .get(['titleKeywords', 'channelNameKeywords'])
         .then((result) => {
             titleKeywords = result.titleKeywords;
+            channelNameKeywords = result.channelNameKeywords;
         });
 }
 
@@ -57,7 +59,13 @@ function manageVideoRenderers() {
         }
 
         let title = titleSpan.getAttribute('title');
-        return titleKeywords.some((keyword) => title.includes(keyword));
+        if (titleKeywords.some((keyword) => title.includes(keyword))) {
+            return true;
+        }
+
+        let channelNameFormattedString = videoRenderer.querySelector('.style-scope ytd-channel-name').querySelector('#text');
+        let channelName = channelNameFormattedString.getAttribute('title');
+        return channelNameKeywords.some((keyword) => channelName.includes(keyword));
     }
 
     function shouldBlockThumbnail(videoRenderer) {
@@ -78,6 +86,12 @@ function manageVideoRenderers() {
 
         let title = titleSpan.getAttribute('title');
         if (titleKeywords.some((keyword) => title.includes(keyword))) {
+            return false;
+        }
+
+        let channelNameFormattedString = videoRenderer.querySelector('.style-scope ytd-channel-name').querySelector('#text');
+        let channelName = channelNameFormattedString.getAttribute('title');
+        if (channelNameKeywords.some((keyword) => channelName.includes(keyword))) {
             return false;
         }
 
