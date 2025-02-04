@@ -2,5 +2,8 @@
     "name": "Content Blocker",
     "description": "Hides the titles and thumbnails of YouTube videos based on their titles and channel names",
     "version": "0.0.0",
-    "manifest_version": 3
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "popup.html"
+    }
 }
