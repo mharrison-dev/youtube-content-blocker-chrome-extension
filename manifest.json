@@ -8,5 +8,15 @@
     },
     "permissions": [
         "storage"
+    ],
+    "content_scripts": [
+        {
+            "js": [
+                "scripts/related-video-blocker.js"
+            ],
+            "matches": [
+                "https://www.youtube.com/watch?v=*"
+            ]
+        }
     ]
 }
