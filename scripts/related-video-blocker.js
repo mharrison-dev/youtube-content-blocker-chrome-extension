@@ -2,8 +2,15 @@
 let titleKeywords = [];
 let channelNameKeywords = [];
 
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.localStorage === 'updated') {
+        loadKeywords()
+            .then(manageVideoRenderers);
+    }
+});
+
 function loadKeywords() {
-    chrome.storage.local
+    return chrome.storage.local
         .get(['titleKeywords', 'channelNameKeywords'])
         .then((result) => {
             titleKeywords = result.titleKeywords;
@@ -49,6 +56,11 @@ function manageVideoRenderers() {
             let titleSpan = videoRenderer.querySelector('#video-title');
             let title = titleSpan.getAttribute('title');
             titleSpan.innerHTML = title;
+
+            let thumbnailImg = videoRenderer.querySelector('.yt-core-image');
+            if (thumbnailImg) {
+                thumbnailImg.style.removeProperty('display');
+            }
         }
     }
 

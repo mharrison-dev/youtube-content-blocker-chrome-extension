@@ -11,7 +11,7 @@ saveButton.addEventListener('click', function saveKeywords() {
                 'titleKeywords': extractKeywords(titleKeywordEntry.value),
                 'channelNameKeywords': extractKeywords(channelNameKeywordEntry.value)
             }
-        );
+        ).then(sendNotificationAboutLocalStorageUpdate);
 
     function extractKeywords(string) {
         let emptyStringRegex = /^\s*$/;
@@ -24,6 +24,16 @@ saveButton.addEventListener('click', function saveKeywords() {
             .map((keyword) => keyword.trim());
 
         return keywords;
+    }
+
+    function sendNotificationAboutLocalStorageUpdate() {
+        chrome.tabs
+            .query({ active: true, lastFocusedWindow: true, url: 'https://www.youtube.com/watch?v=*' })
+            .then(([tab]) => {
+                if (tab) {
+                    chrome.tabs.sendMessage(tab.id, { localStorage: 'updated' });
+                }
+            });
     }
 });
 
