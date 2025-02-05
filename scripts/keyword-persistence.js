@@ -29,9 +29,11 @@ saveButton.addEventListener('click', function saveKeywords() {
     function sendNotificationAboutLocalStorageUpdate() {
         chrome.tabs
             .query({ url: 'https://www.youtube.com/watch?v=*' })
-            .then(([tab]) => {
-                if (tab) {
-                    chrome.tabs.sendMessage(tab.id, { localStorage: 'updated' });
+            .then((tabs) => {
+                if (tabs) {
+                    for (let tab of tabs) {
+                        chrome.tabs.sendMessage(tab.id, { localStorage: 'updated' });
+                    }
                 }
             });
     }
