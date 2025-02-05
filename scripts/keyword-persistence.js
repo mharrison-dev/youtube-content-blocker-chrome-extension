@@ -28,7 +28,7 @@ saveButton.addEventListener('click', function saveKeywords() {
 
     function sendNotificationAboutLocalStorageUpdate() {
         chrome.tabs
-            .query({ active: true, lastFocusedWindow: true, url: 'https://www.youtube.com/watch?v=*' })
+            .query({ url: 'https://www.youtube.com/watch?v=*' })
             .then(([tab]) => {
                 if (tab) {
                     chrome.tabs.sendMessage(tab.id, { localStorage: 'updated' });
