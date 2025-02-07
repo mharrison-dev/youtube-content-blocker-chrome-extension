@@ -40,74 +40,100 @@ function createMutationObserverForRelatedVideoRenderer(callback) {
 function manageVideoRenderers() {
     let videoRenderers = document.getElementsByTagName('ytd-compact-video-renderer');
     for (let videoRenderer of videoRenderers) {
-        if (shouldBlockTitle(videoRenderer)) {
-            let titleSpan = videoRenderer.querySelector('#video-title');
-            titleSpan.innerHTML = 'BLOCKED';
-        }
+        try {
+            let videoRendererManager = new RelatedVideoRendererManager(videoRenderer);
 
-        if (shouldBlockThumbnail(videoRenderer)) {
-            let thumbnailImg = videoRenderer.querySelector('.yt-core-image');
-            if (thumbnailImg) {
-                thumbnailImg.style.display = 'none';
+            if (shouldHideTitle(videoRendererManager)) {
+                videoRendererManager.hideTitle();
             }
-        }
 
-        if (shouldResetRenderer(videoRenderer)) {
-            let titleSpan = videoRenderer.querySelector('#video-title');
-            let title = titleSpan.getAttribute('title');
-            titleSpan.innerHTML = title;
-
-            let thumbnailImg = videoRenderer.querySelector('.yt-core-image');
-            if (thumbnailImg) {
-                thumbnailImg.style.removeProperty('display');
+            if (shouldHideThumbnail(videoRendererManager)) {
+                videoRendererManager.hideThumbnail();
             }
+
+            if (shouldShowTitleAndThumbnail(videoRendererManager)) {
+                videoRendererManager.showTitle();
+                videoRendererManager.showThumbnail();
+            }
+        } catch (error) {
+            continue;
         }
     }
 
-    function shouldBlockTitle(videoRenderer) {
-        let titleSpan = videoRenderer.querySelector('#video-title');
-        if (titleSpan.innerHTML === 'BLOCKED') {
+    function shouldHideTitle(videoRendererManager) {
+        if (videoRendererManager.isHiddingTitle()) {
             return false;
         }
 
-        let title = titleSpan.getAttribute('title');
-        if (titleKeywords.some((keyword) => title.includes(keyword))) {
+        if (videoRendererManager.includesSomeKeywordsInTitle(titleKeywords)) {
             return true;
         }
 
-        let channelNameFormattedString = videoRenderer.querySelector('.style-scope ytd-channel-name').querySelector('#text');
-        let channelName = channelNameFormattedString.getAttribute('title');
-        return channelNameKeywords.some((keyword) => channelName.includes(keyword));
+        return videoRendererManager.includesSomeKeywordsInChannelName(channelNameKeywords);
     }
 
-    function shouldBlockThumbnail(videoRenderer) {
-        let thumbnailImg = videoRenderer.querySelector('.yt-core-image');
-        if (thumbnailImg && thumbnailImg.style.display === 'none') {
+    function shouldHideThumbnail(videoRendererManager) {
+        if (videoRendererManager.isHiddingThumbnail()) {
             return false;
         }
 
-        let titleSpan = videoRenderer.querySelector('#video-title');
-        return titleSpan.innerHTML === 'BLOCKED';
+        return videoRendererManager.isHiddingTitle();
     }
 
-    function shouldResetRenderer(videoRenderer) {
-        let titleSpan = videoRenderer.querySelector('#video-title');
-        if (titleSpan.innerHTML !== 'BLOCKED') {
+    function shouldShowTitleAndThumbnail(videoRendererManager) {
+        if (videoRendererManager.isShowingTitle()) {
             return false;
         }
 
+        if (videoRendererManager.includesSomeKeywordsInTitle(titleKeywords)) {
+            return false;
+        }
+
+        if (videoRendererManager.includesSomeKeywordsInChannelName(channelNameKeywords)) {
+            return false;
+        }
+
+        return videoRendererManager.isHiddingTitle();
+    }
+}
+
+class RelatedVideoRendererManager extends VideoRendererManager {
+    constructor(videoRenderer) {
+        super();
+        this.videoRenderer = videoRenderer;
+        if (!this.#canAccessNecessaryAttributesAndElements()) {
+            throw new Error('Cannot instantiate class RelatedVideoRendererManager when ytd-compact-video-renderer has not been fully loaded.');
+        }
+    }
+
+    getTitle() {
+        let titleSpan = this.videoRenderer.querySelector('#video-title');
         let title = titleSpan.getAttribute('title');
-        if (titleKeywords.some((keyword) => title.includes(keyword))) {
-            return false;
-        }
+        return title;
+    }
 
-        let channelNameFormattedString = videoRenderer.querySelector('.style-scope ytd-channel-name').querySelector('#text');
+    getTitleContainer() {
+        let titleSpan = this.videoRenderer.querySelector('#video-title');
+        return titleSpan;
+    }
+
+    getChannelName() {
+        let channelNameFormattedString = this.videoRenderer.querySelector('.style-scope ytd-channel-name').querySelector('#text');
         let channelName = channelNameFormattedString.getAttribute('title');
-        if (channelNameKeywords.some((keyword) => channelName.includes(keyword))) {
+        return channelName;
+    }
+
+    getThumbnail() {
+        return this.videoRenderer.querySelector('.yt-core-image');
+    }
+
+    #canAccessNecessaryAttributesAndElements() {
+        let channelNameFormattedString = this.videoRenderer.querySelector('.style-scope ytd-channel-name').querySelector('#text');
+        if (!channelNameFormattedString) {
             return false;
         }
 
-        return titleSpan.innerHTML !== title;
+        return this.getTitleContainer() && this.getThumbnail();
     }
 }
 
