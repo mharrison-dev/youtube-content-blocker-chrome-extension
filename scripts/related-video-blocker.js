@@ -5,7 +5,11 @@ let channelNameKeywords = [];
 chrome.runtime.onMessage.addListener((message) => {
     if (message.localStorage === 'updated') {
         loadKeywords()
-            .then(manageVideoRenderers);
+            .then(() => {
+                relatedVideoRendererSetManager.setTitleKeywords(titleKeywords);
+                relatedVideoRendererSetManager.setChannelNameKeywords(channelNameKeywords);
+            })
+            .then(() => relatedVideoRendererSetManager.updateVideoRenderers());
     }
 });
 
@@ -37,63 +41,23 @@ function createMutationObserverForRelatedVideoRenderer(callback) {
 }
 
 // Video Renderer Logic
-function manageVideoRenderers() {
-    let videoRenderers = document.getElementsByTagName('ytd-compact-video-renderer');
-    for (let videoRenderer of videoRenderers) {
-        try {
-            let videoRendererManager = new RelatedVideoRendererManager(videoRenderer);
-
-            if (shouldHideTitle(videoRendererManager)) {
-                videoRendererManager.hideTitle();
-            }
-
-            if (shouldHideThumbnail(videoRendererManager)) {
-                videoRendererManager.hideThumbnail();
-            }
-
-            if (shouldShowTitleAndThumbnail(videoRendererManager)) {
-                videoRendererManager.showTitle();
-                videoRendererManager.showThumbnail();
-            }
-        } catch (error) {
-            continue;
-        }
+class RelatedVideoRendererSetManager extends VideoRendererSetManager {
+    constructor() {
+        super();
     }
 
-    function shouldHideTitle(videoRendererManager) {
-        if (videoRendererManager.isHiddingTitle()) {
-            return false;
+    getVideoRendererManagers() {
+        let videoRendererManagers = [];
+        let videoRenderers = document.getElementsByTagName('ytd-compact-video-renderer');
+        for (let videoRenderer of videoRenderers) {
+            try {
+                videoRendererManagers.push(new RelatedVideoRendererManager(videoRenderer));
+            } catch (error) {
+                continue;
+            }
         }
 
-        if (videoRendererManager.includesSomeKeywordsInTitle(titleKeywords)) {
-            return true;
-        }
-
-        return videoRendererManager.includesSomeKeywordsInChannelName(channelNameKeywords);
-    }
-
-    function shouldHideThumbnail(videoRendererManager) {
-        if (videoRendererManager.isHiddingThumbnail()) {
-            return false;
-        }
-
-        return videoRendererManager.isHiddingTitle();
-    }
-
-    function shouldShowTitleAndThumbnail(videoRendererManager) {
-        if (videoRendererManager.isShowingTitle()) {
-            return false;
-        }
-
-        if (videoRendererManager.includesSomeKeywordsInTitle(titleKeywords)) {
-            return false;
-        }
-
-        if (videoRendererManager.includesSomeKeywordsInChannelName(channelNameKeywords)) {
-            return false;
-        }
-
-        return videoRendererManager.isHiddingTitle();
+        return videoRendererManagers;
     }
 }
 
@@ -138,5 +102,11 @@ class RelatedVideoRendererManager extends VideoRendererManager {
 }
 
 // Main Logic
-loadKeywords();
-createMutationObserverForRelatedVideoRenderer(manageVideoRenderers);
+let relatedVideoRendererSetManager = undefined;
+loadKeywords()
+    .then(() => {
+        relatedVideoRendererSetManager = new RelatedVideoRendererSetManager();
+        relatedVideoRendererSetManager.setTitleKeywords(titleKeywords);
+        relatedVideoRendererSetManager.setChannelNameKeywords(channelNameKeywords);
+        createMutationObserverForRelatedVideoRenderer(() => relatedVideoRendererSetManager.updateVideoRenderers());
+    });

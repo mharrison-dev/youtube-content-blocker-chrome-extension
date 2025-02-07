@@ -14,6 +14,7 @@
         {
             "js": [
                 "scripts/video-renderer-manager.js",
+                "scripts/video-renderer-set-manager.js",
                 "scripts/related-video-blocker.js"
             ],
             "matches": [
