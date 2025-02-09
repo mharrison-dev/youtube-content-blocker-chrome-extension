@@ -6,6 +6,12 @@ class VideoRendererSetManager {
         if (new.target === VideoRendererSetManager) {
             throw new Error('Cannot instantiate abstract class VideoRendererSetManager directly.');
         }
+
+        chrome.runtime.onMessage.addListener((keywords) => {
+            this.setTitleKeywords(keywords.titleKeywords);
+            this.setChannelNameKeywords(keywords.channelNameKeywords);
+            this.updateVideoRenderers();
+        });        
     }
 
     updateVideoRenderers() {

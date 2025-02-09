@@ -32,7 +32,11 @@ saveButton.addEventListener('click', function saveKeywords() {
             .then((tabs) => {
                 if (tabs) {
                     for (let tab of tabs) {
-                        chrome.tabs.sendMessage(tab.id, { localStorage: 'updated' });
+                        chrome.tabs.sendMessage(tab.id,
+                            {
+                                titleKeywords: extractKeywords(titleKeywordEntry.value),
+                                channelNameKeywords: extractKeywords(channelNameKeywordEntry.value)
+                            });
                     }
                 }
             });

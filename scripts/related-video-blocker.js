@@ -1,27 +1,3 @@
-// Keyword Loading Logic
-let titleKeywords = [];
-let channelNameKeywords = [];
-
-chrome.runtime.onMessage.addListener((message) => {
-    if (message.localStorage === 'updated') {
-        loadKeywords()
-            .then(() => {
-                relatedVideoRendererSetManager.setTitleKeywords(titleKeywords);
-                relatedVideoRendererSetManager.setChannelNameKeywords(channelNameKeywords);
-            })
-            .then(() => relatedVideoRendererSetManager.updateVideoRenderers());
-    }
-});
-
-function loadKeywords() {
-    return chrome.storage.local
-        .get(['titleKeywords', 'channelNameKeywords'])
-        .then((result) => {
-            titleKeywords = result.titleKeywords;
-            channelNameKeywords = result.channelNameKeywords;
-        });
-}
-
 // Mutation Observer Logic
 function createMutationObserverForRelatedVideoRenderer(callback) {
     let bodyTag = document.getElementsByTagName('body')[0];
@@ -105,10 +81,11 @@ class RelatedVideoRendererManager extends VideoRendererManager {
 
 // Main Logic
 let relatedVideoRendererSetManager = undefined;
-loadKeywords()
-    .then(() => {
+chrome.storage.local
+    .get(['titleKeywords', 'channelNameKeywords'])
+    .then((keywords) => {
         relatedVideoRendererSetManager = new RelatedVideoRendererSetManager();
-        relatedVideoRendererSetManager.setTitleKeywords(titleKeywords);
-        relatedVideoRendererSetManager.setChannelNameKeywords(channelNameKeywords);
+        relatedVideoRendererSetManager.setTitleKeywords(keywords.titleKeywords);
+        relatedVideoRendererSetManager.setChannelNameKeywords(keywords.channelNameKeywords);
         createMutationObserverForRelatedVideoRenderer(() => relatedVideoRendererSetManager.updateVideoRenderers());
     });
