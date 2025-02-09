@@ -1,19 +1,15 @@
 // Mutation Observer Logic
-function createMutationObserverForRelatedVideoRenderer(callback) {
-    let bodyTag = document.getElementsByTagName('body')[0];
-    let config = { attributes: true, subtree: true };
-    let waitForRelatedVideoRendererToLoad = (mutationList, auxiliaryObserver) => {
-        let htmlCollection = document.getElementsByTagName('ytd-watch-next-secondary-results-renderer');
-        if (htmlCollection.length > 0) {
-            let relatedVideoRenderer = htmlCollection[0];
-            let mainObserver = new MutationObserver(callback);
-            mainObserver.observe(relatedVideoRenderer, config);
-            auxiliaryObserver.disconnect();
-        }
-    };
+class RelatedVideoRendererSetMutationObserver extends VideoRendererSetMutationObserver {
+    constructor(callback) {
+        super(callback);
+    }
 
-    let auxiliaryObserver = new MutationObserver(waitForRelatedVideoRendererToLoad);
-    auxiliaryObserver.observe(bodyTag, config);
+    getVideoRendererSet() {
+        let htmlCollection = document.getElementsByTagName('ytd-watch-next-secondary-results-renderer');
+        return (htmlCollection.length > 0)
+            ? htmlCollection[0]
+            : null;
+    }
 }
 
 // Video Renderer Logic
@@ -81,11 +77,12 @@ class RelatedVideoRendererManager extends VideoRendererManager {
 
 // Main Logic
 let relatedVideoRendererSetManager = undefined;
+let relatedVideoRendererSetMutationObserver = undefined;
 chrome.storage.local
     .get(['titleKeywords', 'channelNameKeywords'])
     .then((keywords) => {
         relatedVideoRendererSetManager = new RelatedVideoRendererSetManager();
         relatedVideoRendererSetManager.setTitleKeywords(keywords.titleKeywords);
         relatedVideoRendererSetManager.setChannelNameKeywords(keywords.channelNameKeywords);
-        createMutationObserverForRelatedVideoRenderer(() => relatedVideoRendererSetManager.updateVideoRenderers());
+        relatedVideoRendererSetMutationObserver = new RelatedVideoRendererSetMutationObserver(() => relatedVideoRendererSetManager.updateVideoRenderers());
     });
