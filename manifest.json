@@ -13,10 +13,13 @@
     "content_scripts": [
         {
             "js": [
-                "scripts/video-renderer-manager.js",
-                "scripts/video-renderer-set-mutation-observer.js",
-                "scripts/video-renderer-set-manager.js",
-                "scripts/related-video-blocker.js"
+                "scripts/video-renderer-managers/video-renderer-manager.js",
+                "scripts/video-renderer-managers/watch-page-video-renderer-manager.js",
+                "scripts/video-renderer-set-mutation-observers/video-renderer-set-mutation-observer.js",
+                "scripts/video-renderer-set-mutation-observers/watch-page-video-renderer-set-mutation-observer.js",
+                "scripts/video-renderer-set-managers/video-renderer-set-manager.js",
+                "scripts/video-renderer-set-managers/watch-page-video-renderer-set-manager.js",
+                "scripts/pages/watch-page.js"
             ],
             "matches": [
                 "https://www.youtube.com/watch?v=*"
