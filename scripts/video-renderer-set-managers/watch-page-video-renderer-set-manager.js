@@ -14,6 +14,15 @@ class RelatedVideoRendererSetManager extends VideoRendererSetManager {
             }
         }
 
+        let videoPlaylistRenderers = document.getElementsByTagName('yt-lockup-view-model');
+        for (let videoPlaylistRenderer of videoPlaylistRenderers) {
+            try {
+                videoRendererManagers.push(new RelatedVideoPlaylistRendererManager(videoPlaylistRenderer));
+            } catch (error) {
+                continue;
+            }
+        }
+
         return videoRendererManagers;
     }
 }
