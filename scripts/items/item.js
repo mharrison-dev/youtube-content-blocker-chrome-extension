@@ -1,7 +1,7 @@
-class VideoItem {
+class Item {
     constructor() {
-        if (new.target === VideoItem) {
-            throw new Error('Cannot instantiate abstract class VideoItem directly.');
+        if (new.target === Item) {
+            throw new Error('Cannot instantiate abstract class Item directly.');
         }
     }
 

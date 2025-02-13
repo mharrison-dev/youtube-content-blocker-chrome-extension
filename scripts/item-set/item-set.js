@@ -1,21 +1,22 @@
 class ItemSet {
     #titleKeywords = undefined;
     #channelNameKeywords = undefined;
+    #itemFactories = [];
 
     constructor() {
-        if (new.target === ItemSet) {
-            throw new Error('Cannot instantiate abstract class ItemSet directly.');
-        }
-
         chrome.runtime.onMessage.addListener((keywords) => {
             this.setTitleKeywords(keywords.titleKeywords);
             this.setChannelNameKeywords(keywords.channelNameKeywords);
             this.updateItems();
-        });        
+        });
+    }
+
+    addItemFactory(itemFactory) {
+        this.#itemFactories.push(itemFactory);
     }
 
     updateItems() {
-        let items = this.getItems();
+        let items = this.#getItems();
         for (let item of items) {
             if (this.#shouldHideTitle(item)) {
                 item.hideTitle();
@@ -30,6 +31,15 @@ class ItemSet {
                 item.showThumbnail();
             }
         }
+    }
+
+    #getItems() {
+        let items = [];
+        for (let itemFactory of this.#itemFactories) {
+            items.push(...itemFactory.getItems());
+        }
+
+        return items;
     }
 
     #shouldHideTitle(item) {

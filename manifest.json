@@ -13,14 +13,16 @@
     "content_scripts": [
         {
             "js": [
-                "scripts/items/videos/video-item.js",
-                "scripts/items/videos/watch-page-video-item.js",
-                "scripts/items/playlists/playlist-item.js",
-                "scripts/items/playlists/watch-page-playlist-item.js",
+                "scripts/items/factories/item-factory.js",
+                "scripts/items/factories/watch-page/watch-page-playlist-item-factory.js",
+                "scripts/items/factories/watch-page/watch-page-video-item-factory.js",
+                "scripts/items/item.js",
+                "scripts/items/playlist-item.js",
+                "scripts/items/watch-page/watch-page-playlist-item.js",
+                "scripts/items/watch-page/watch-page-video-item.js",
                 "scripts/item-set-observers/item-set-observer.js",
                 "scripts/item-set-observers/watch-page-item-set-observer.js",
-                "scripts/item-sets/item-set.js",
-                "scripts/item-sets/watch-page-item-set.js",
+                "scripts/item-set/item-set.js",
                 "scripts/pages/watch-page.js"
             ],
             "matches": [

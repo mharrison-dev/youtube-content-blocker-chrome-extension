@@ -1,4 +1,4 @@
-class PlaylistItem extends VideoItem {
+class PlaylistItem extends Item {
     constructor() {
         super();
         if (new.target === PlaylistItem) {

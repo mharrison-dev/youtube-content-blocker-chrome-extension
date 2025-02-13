@@ -1,4 +1,4 @@
-class WatchPageVideoItem extends VideoItem {
+class WatchPageVideoItem extends Item {
     #videoItemDiv = undefined;
 
     constructor(videoItemDiv) {
