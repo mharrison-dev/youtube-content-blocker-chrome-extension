@@ -1,10 +1,10 @@
-let relatedVideoRendererSetManager = undefined;
-let relatedVideoRendererSetMutationObserver = undefined;
+let watchPageItemSet = undefined;
+let watchPageItemSetObserver = undefined;
 chrome.storage.local
     .get(['titleKeywords', 'channelNameKeywords'])
     .then((keywords) => {
-        relatedVideoRendererSetManager = new RelatedVideoRendererSetManager();
-        relatedVideoRendererSetManager.setTitleKeywords(keywords.titleKeywords);
-        relatedVideoRendererSetManager.setChannelNameKeywords(keywords.channelNameKeywords);
-        relatedVideoRendererSetMutationObserver = new RelatedVideoRendererSetMutationObserver(() => relatedVideoRendererSetManager.updateVideoRenderers());
+        watchPageItemSet = new WatchPageItemSet();
+        watchPageItemSet.setTitleKeywords(keywords.titleKeywords);
+        watchPageItemSet.setChannelNameKeywords(keywords.channelNameKeywords);
+        watchPageItemSetObserver = new WatchPageItemSetObserver(() => watchPageItemSet.updateItems());
     });

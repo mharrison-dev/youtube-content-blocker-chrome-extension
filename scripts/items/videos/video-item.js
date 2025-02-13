@@ -1,7 +1,7 @@
-class VideoRendererManager {
+class VideoItem {
     constructor() {
-        if (new.target === VideoRendererManager) {
-            throw new Error('Cannot instantiate abstract class VideoRendererManager directly.');
+        if (new.target === VideoItem) {
+            throw new Error('Cannot instantiate abstract class VideoItem directly.');
         }
     }
 

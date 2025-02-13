@@ -13,14 +13,14 @@
     "content_scripts": [
         {
             "js": [
-                "scripts/renderers/videos/video-renderer-manager.js",
-                "scripts/renderers/videos/watch-page-video-renderer-manager.js",
-                "scripts/renderers/playlists/video-playlist-renderer-manager.js",
-                "scripts/renderers/playlists/watch-page-video-playlist-renderer-manager.js",
-                "scripts/sets/mutation-observers/video-renderer-set-mutation-observer.js",
-                "scripts/sets/mutation-observers/watch-page-video-renderer-set-mutation-observer.js",
-                "scripts/sets/managers/video-renderer-set-manager.js",
-                "scripts/sets/managers/watch-page-video-renderer-set-manager.js",
+                "scripts/items/videos/video-item.js",
+                "scripts/items/videos/watch-page-video-item.js",
+                "scripts/items/playlists/playlist-item.js",
+                "scripts/items/playlists/watch-page-playlist-item.js",
+                "scripts/item-set-observers/item-set-observer.js",
+                "scripts/item-set-observers/watch-page-item-set-observer.js",
+                "scripts/item-sets/item-set.js",
+                "scripts/item-sets/watch-page-item-set.js",
                 "scripts/pages/watch-page.js"
             ],
             "matches": [

@@ -1,12 +1,12 @@
-class VideoRendererSetMutationObserver {
+class ItemSetObserver {
     #config = { attributes: true, subtree: true };
     #callback = undefined;
     #mainObserver = undefined;
     #auxiliaryObserver = undefined;
 
     constructor(callback) {
-        if (new.target === VideoRendererSetMutationObserver) {
-            throw new Error('Cannot instantiate abstract class VideoRendererSetMutationObserver directly.');
+        if (new.target === ItemSetObserver) {
+            throw new Error('Cannot instantiate abstract class ItemSetObserver directly.');
         }
 
         this.#callback = callback;
@@ -20,10 +20,10 @@ class VideoRendererSetMutationObserver {
     }
 
     #createMainObserver() {
-        let videoRendererSet = this.getVideoRendererSet();
-        if (videoRendererSet) {
+        let itemDivSet = this.getItemDivSet();
+        if (itemDivSet) {
             this.#mainObserver = new MutationObserver(this.#callback);
-            this.#mainObserver.observe(videoRendererSet, this.#config);
+            this.#mainObserver.observe(itemDivSet, this.#config);
             this.#auxiliaryObserver.disconnect();
         }
     }

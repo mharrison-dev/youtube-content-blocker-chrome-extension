@@ -1,8 +1,8 @@
-class VideoPlaylistRendererManager extends VideoRendererManager {
+class PlaylistItem extends VideoItem {
     constructor() {
         super();
-        if (new.target === VideoPlaylistRendererManager) {
-            throw new Error('Cannot instantiate abstract class VideoPlaylistRendererManager directly.');
+        if (new.target === PlaylistItem) {
+            throw new Error('Cannot instantiate abstract class PlaylistItem directly.');
         }
     }
 
