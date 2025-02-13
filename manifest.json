@@ -31,6 +31,6 @@
         }
     ],
     "background": {
-        "service_worker": "scripts/extension-installation.js"
+        "service_worker": "scripts/installation/extension-installation.js"
     }
 }
