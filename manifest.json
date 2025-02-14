@@ -14,8 +14,11 @@
         {
             "js": [
                 "scripts/items/factories/item-factory.js",
+                "scripts/items/factories/home-page/home-page-playlist-item-factory.js",
                 "scripts/items/factories/home-page/home-page-video-item-factory.js",
                 "scripts/items/item.js",
+                "scripts/items/playlist-item.js",
+                "scripts/items/home-page/home-page-playlist-item.js",
                 "scripts/items/home-page/home-page-video-item.js",
                 "scripts/item-set-observers/item-set-observer.js",
                 "scripts/item-set-observers/home-page-item-set-observer.js",

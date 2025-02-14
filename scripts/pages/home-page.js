@@ -5,6 +5,7 @@ chrome.storage.local
     .then((keywords) => {
         homePageItemSet = new ItemSet();
         homePageItemSet.addItemFactory(new HomePageVideoItemFactory());
+        homePageItemSet.addItemFactory(new HomePagePlaylistItemFactory());
         homePageItemSet.setTitleKeywords(keywords.titleKeywords);
         homePageItemSet.setChannelNameKeywords(keywords.channelNameKeywords);
         homePageItemSetObserver = new HomePageItemSetObserver(() => homePageItemSet.updateItems());
