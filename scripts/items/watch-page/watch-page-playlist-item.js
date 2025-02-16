@@ -4,8 +4,8 @@ class WatchPagePlaylistItem extends PlaylistItem {
     constructor(playlistItemDiv) {
         super();
         this.#playlistItemDiv = playlistItemDiv;
-        if (!this.#canAccessNecessaryAttributesAndElements()) {
-            throw new Error('Cannot instantiate class WatchPagePlaylistItem when ytd-compact-video-renderer has not been fully loaded.');
+        if (!this.validate()) {
+            throw new Error('Cannot instantiate class WatchPagePlaylistItem when item div has not been fully loaded.');
         }
     }
 
@@ -30,29 +30,5 @@ class WatchPagePlaylistItem extends PlaylistItem {
 
     getThumbnail() {
         return this.#playlistItemDiv.querySelector('img');
-    }
-
-    #canAccessNecessaryAttributesAndElements() {
-        let titleHeaderTag = this.#playlistItemDiv.querySelector('.yt-lockup-metadata-view-model-wiz__heading-reset');
-        if (!titleHeaderTag) {
-            return false;
-        }
-
-        let titleAnchorTag = this.#playlistItemDiv.querySelector('.yt-lockup-metadata-view-model-wiz__title');
-        if (!titleAnchorTag) {
-            return false;
-        }
-
-        let contentMetaDataViewModelTag = this.#playlistItemDiv.querySelector('yt-content-metadata-view-model');
-        if (!contentMetaDataViewModelTag) {
-            return false;
-        }
-
-        let thumbnail = this.#playlistItemDiv.querySelector('img');
-        if (!thumbnail) {
-            return false;
-        }
-
-        return true;
     }
 }

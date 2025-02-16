@@ -4,8 +4,8 @@ class HomePageVideoItem extends Item {
     constructor(videoItemDiv) {
         super();
         this.#videoItemDiv = videoItemDiv;
-        if (!this.#canAccessNecessaryAttributesAndElements()) {
-            throw new Error('Cannot instantiate class HomePageVideoItem when ytd-compact-video-renderer has not been fully loaded.');
+        if (!this.validate()) {
+            throw new Error('Cannot instantiate class HomePageVideoItem when item div has not been fully loaded.');
         }
     }
 
@@ -29,34 +29,5 @@ class HomePageVideoItem extends Item {
 
     getThumbnail() {
         return this.#videoItemDiv.querySelector('img');
-    }
-
-    #canAccessNecessaryAttributesAndElements() {
-        let titleAnchorTag = this.#videoItemDiv.querySelector('#video-title-link');
-        if (!titleAnchorTag) {
-            return false;
-        }
-
-        let ytFormattedStringTag = this.#videoItemDiv.querySelector('#video-title');
-        if (!ytFormattedStringTag) {
-            return false;
-        }
-
-        let ytdChannelNameTag = this.#videoItemDiv.querySelector('ytd-channel-name');
-        if (!ytdChannelNameTag) {
-            return false;
-        }
-
-        let imageTag = this.#videoItemDiv.querySelector('img');
-        if (!imageTag) {
-            return false;
-        }
-
-        let imageTagStyle = imageTag.getAttribute('style');
-        if (!imageTagStyle) {
-            return false;
-        }
-
-        return true;
     }
 }
