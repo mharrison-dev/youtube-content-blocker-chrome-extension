@@ -23,6 +23,7 @@
                 "scripts/item-set-observers/item-set-observer.js",
                 "scripts/item-set-observers/home-page-item-set-observer.js",
                 "scripts/item-set/item-set.js",
+                "scripts/keyword-persistence/keyword-persistence.js",
                 "scripts/pages/home-page.js"
             ],
             "matches": [
@@ -41,6 +42,7 @@
                 "scripts/item-set-observers/item-set-observer.js",
                 "scripts/item-set-observers/watch-page-item-set-observer.js",
                 "scripts/item-set/item-set.js",
+                "scripts/keyword-persistence/keyword-persistence.js",
                 "scripts/pages/watch-page.js"
             ],
             "matches": [

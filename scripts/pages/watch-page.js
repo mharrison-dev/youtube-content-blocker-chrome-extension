@@ -1,7 +1,7 @@
 let watchPageItemSet = undefined;
 let watchPageItemSetObserver = undefined;
-chrome.storage.local
-    .get(['titleKeywords', 'channelNameKeywords'])
+KeywordPersistence
+    .loadKeywords()
     .then((keywords) => {
         watchPageItemSet = new ItemSet();
         watchPageItemSet.addItemFactory(new WatchPageVideoItemFactory());

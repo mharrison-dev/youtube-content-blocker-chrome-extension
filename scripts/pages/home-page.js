@@ -1,7 +1,7 @@
 let homePageItemSet = undefined;
 let homePageItemSetObserver = undefined;
-chrome.storage.local
-    .get(['titleKeywords', 'channelNameKeywords'])
+KeywordPersistence
+    .loadKeywords()
     .then((keywords) => {
         homePageItemSet = new ItemSet();
         homePageItemSet.addItemFactory(new HomePageVideoItemFactory());

@@ -5,13 +5,11 @@ let saveButton = document.getElementById('save-button');
 
 // Keyword Saving Logic
 saveButton.addEventListener('click', function saveKeywords() {
-    chrome.storage.local
-        .set(
-            {
-                'titleKeywords': extractKeywords(titleKeywordEntry.value),
-                'channelNameKeywords': extractKeywords(channelNameKeywordEntry.value)
-            }
-        ).then(sendNotificationAboutLocalStorageUpdate);
+    let titleKeywords = extractKeywords(titleKeywordEntry.value);
+    let channelNameKeywords = extractKeywords(channelNameKeywordEntry.value);
+    KeywordPersistence
+        .save(titleKeywords, channelNameKeywords)
+        .then(sendNotificationAboutLocalStorageUpdate);
 
     function extractKeywords(string) {
         let emptyStringRegex = /^\s*$/;
@@ -45,11 +43,11 @@ saveButton.addEventListener('click', function saveKeywords() {
 
 // Keyword Loading Logic
 function loadKeywords() {
-    chrome.storage.local
-        .get(['titleKeywords', 'channelNameKeywords'])
-        .then((result) => {
-            addKeywordsToEntry(result.titleKeywords, titleKeywordEntry);
-            addKeywordsToEntry(result.channelNameKeywords, channelNameKeywordEntry);
+    KeywordPersistence
+        .loadKeywords()
+        .then((keywords) => {
+            addKeywordsToEntry(keywords.titleKeywords, titleKeywordEntry);
+            addKeywordsToEntry(keywords.channelNameKeywords, channelNameKeywordEntry);
         });
 
     function addKeywordsToEntry(keywords, entry) {
