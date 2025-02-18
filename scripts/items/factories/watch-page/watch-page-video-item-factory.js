@@ -3,10 +3,9 @@ class WatchPageVideoItemFactory extends ItemFactory {
         let videoItems = [];
         let videoItemDivs = document.getElementsByTagName('ytd-compact-video-renderer');
         for (let videoItemDiv of videoItemDivs) {
-            try {
-                videoItems.push(new WatchPageVideoItem(videoItemDiv));
-            } catch (error) {
-                continue;
+            if (WatchPageVideoItem.validate(videoItemDiv)) {
+                let videoItem = new WatchPageVideoItem(videoItemDiv);
+                videoItems.push(videoItem);
             }
         }
 

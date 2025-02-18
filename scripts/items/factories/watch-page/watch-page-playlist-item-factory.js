@@ -1,12 +1,11 @@
 class WatchPagePlaylistItemFactory extends ItemFactory {
     getItems() {
         let playlistItems = [];
-        let playlistItemDivs = document.getElementsByTagName('ytd-compact-video-renderer');
+        let playlistItemDivs = document.getElementsByTagName('yt-lockup-view-model');
         for (let playlistItemDiv of playlistItemDivs) {
-            try {
-                playlistItems.push(new WatchPagePlaylistItem(playlistItemDiv));
-            } catch (error) {
-                continue;
+            if (WatchPagePlaylistItem.validate(playlistItemDiv)) {
+                let playlistItem = new WatchPagePlaylistItem(playlistItemDiv);
+                playlistItems.push(playlistItem);
             }
         }
 

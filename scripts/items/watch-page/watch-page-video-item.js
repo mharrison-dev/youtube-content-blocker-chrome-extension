@@ -4,9 +4,35 @@ class WatchPageVideoItem extends Item {
     constructor(videoItemDiv) {
         super();
         this.#videoItemDiv = videoItemDiv;
-        if (!this.validate()) {
-            throw new Error('Cannot instantiate class WatchPageVideoItem when item div has not been fully loaded.');
+    }
+
+    static validate(videoItemDiv) {
+        let titleSpan = videoItemDiv.querySelector('#video-title');
+        if (!titleSpan) {
+            return false;
         }
+
+        let title = titleSpan.getAttribute('title');
+        if (!title) {
+            return false;
+        }
+
+        let channelNameFormattedString = videoItemDiv.querySelector('.style-scope ytd-channel-name').querySelector('#text');
+        if (!channelNameFormattedString) {
+            return false;
+        }
+
+        let channelName = channelNameFormattedString.getAttribute('title');
+        if (!channelName) {
+            return false;
+        }
+
+        let img = videoItemDiv.querySelector('.yt-core-image');
+        if (!img) {
+            return false;
+        }
+
+        return true;
     }
 
     getTitle() {
