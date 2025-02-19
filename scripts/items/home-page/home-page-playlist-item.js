@@ -4,9 +4,50 @@ class HomePagePlaylistItem extends PlaylistItem {
     constructor(playlistItemDiv) {
         super();
         this.#playlistItemDiv = playlistItemDiv;
-        if (!this.validate()) {
-            throw new Error('Cannot instantiate class HomePagePlaylistItem when item div has not been fully loaded.');
+    }
+
+    static validate(playlistItemDiv) {
+        let titleHeaderTag = playlistItemDiv.querySelector('h3');
+        if (!titleHeaderTag) {
+            return false;
         }
+
+        let title = titleHeaderTag.getAttribute('title');
+        if (!title) {
+            return false;
+        }
+
+        let titleAnchorTag = playlistItemDiv.querySelector('.yt-lockup-metadata-view-model-wiz__title');
+        if (!titleAnchorTag) {
+            return false;
+        }
+
+        let titleSpan = titleAnchorTag.querySelector('span');
+        if (!titleSpan) {
+            return false;
+        }
+
+        let contentMetaDataViewModelTag = playlistItemDiv.querySelector('yt-content-metadata-view-model');
+        if (!contentMetaDataViewModelTag) {
+            return false;
+        }
+
+        let spanForChannelNames = contentMetaDataViewModelTag.querySelector('span');
+        if (!spanForChannelNames) {
+            return false;
+        }
+
+        let channelNames = spanForChannelNames.innerText;
+        if (!channelNames) {
+            return false;
+        }
+
+        let imgTag = playlistItemDiv.querySelector('img');
+        if (!imgTag) {
+            return false;
+        }
+        
+        return true;
     }
 
     getTitle() {

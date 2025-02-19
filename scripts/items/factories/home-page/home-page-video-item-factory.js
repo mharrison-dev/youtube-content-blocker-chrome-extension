@@ -3,10 +3,9 @@ class HomePageVideoItemFactory extends ItemFactory {
         let videoItems = [];
         let videoItemDivs = document.getElementsByTagName('ytd-rich-grid-media');
         for (let videoItemDiv of videoItemDivs) {
-            try {
-                videoItems.push(new HomePageVideoItem(videoItemDiv));
-            } catch (error) {
-                continue;
+            if (HomePageVideoItem.validate(videoItemDiv)) {
+                let videoItem = new HomePageVideoItem(videoItemDiv);
+                videoItems.push(videoItem);
             }
         }
 

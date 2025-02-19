@@ -3,10 +3,9 @@ class HomePagePlaylistItemFactory extends ItemFactory {
         let playlistItems = [];
         let playlistItemDivs = document.getElementsByTagName('yt-lockup-view-model');
         for (let playlistItemDiv of playlistItemDivs) {
-            try {
-                playlistItems.push(new HomePagePlaylistItem(playlistItemDiv));
-            } catch (error) {
-                continue;
+            if (HomePagePlaylistItem.validate(playlistItemDiv)) {
+                let playlistItem = new HomePagePlaylistItem(playlistItemDiv);
+                playlistItems.push(playlistItem);
             }
         }
 
