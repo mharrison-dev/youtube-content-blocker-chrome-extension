@@ -61,14 +61,4 @@ class Item {
     #includesSome(keywords, string) {
         return keywords.some((keyword) => string.includes(keyword));
     }
-
-    validate() {
-        try {
-            return this.isShowingTitle
-                && this.isShowingThumbnail
-                && this.getChannelName === null;
-        } catch (error) {
-            return false;
-        }
-    }
 }
