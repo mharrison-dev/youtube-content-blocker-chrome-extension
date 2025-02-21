@@ -13,10 +13,7 @@
     "content_scripts": [
         {
             "js": [
-                "scripts/items/factories/item-factory.js",
-                "scripts/items/factories/home-page/home-page-playlist-item-factory.js",
-                "scripts/items/factories/home-page/home-page-video-item-factory.js",
-                "scripts/items/factories/home-page/home-page-short-item-factory.js",
+                "scripts/items/factory/item-factory.js",
                 "scripts/items/item.js",
                 "scripts/items/playlist-item.js",
                 "scripts/items/short-item.js",
@@ -35,9 +32,7 @@
         },
         {
             "js": [
-                "scripts/items/factories/item-factory.js",
-                "scripts/items/factories/watch-page/watch-page-playlist-item-factory.js",
-                "scripts/items/factories/watch-page/watch-page-video-item-factory.js",
+                "scripts/items/factory/item-factory.js",
                 "scripts/items/item.js",
                 "scripts/items/playlist-item.js",
                 "scripts/items/watch-page/watch-page-playlist-item.js",
