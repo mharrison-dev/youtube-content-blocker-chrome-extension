@@ -3,13 +3,11 @@ class ItemSetObserver {
     #callback = undefined;
     #mainObserver = undefined;
     #auxiliaryObserver = undefined;
+    #getItemDivs = undefined;
 
-    constructor(callback) {
-        if (new.target === ItemSetObserver) {
-            throw new Error('Cannot instantiate abstract class ItemSetObserver directly.');
-        }
-
+    constructor(callback, getItemDivs) {
         this.#callback = callback;
+        this.#getItemDivs = getItemDivs;
         this.#createAuxiliaryObserver();
     }
 
@@ -20,10 +18,10 @@ class ItemSetObserver {
     }
 
     #createMainObserver() {
-        let itemDivSet = this.getItemDivSet();
-        if (itemDivSet) {
+        let itemDivs = this.#getItemDivs();
+        if (itemDivs) {
             this.#mainObserver = new MutationObserver(this.#callback);
-            this.#mainObserver.observe(itemDivSet, this.#config);
+            this.#mainObserver.observe(itemDivs, this.#config);
             this.#auxiliaryObserver.disconnect();
         }
     }

@@ -9,5 +9,5 @@ KeywordPersistence
         homePageItemSet.addItemFactory(new ItemFactory(HomePageShortItem, () => document.getElementsByTagName('ytm-shorts-lockup-view-model')));
         homePageItemSet.setTitleKeywords(keywords.titleKeywords);
         homePageItemSet.setChannelNameKeywords(keywords.channelNameKeywords);
-        homePageItemSetObserver = new HomePageItemSetObserver(() => homePageItemSet.updateItems());
+        homePageItemSetObserver = new ItemSetObserver(() => homePageItemSet.updateItems(), () => document.getElementById('contents'));
     });
