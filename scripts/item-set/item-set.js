@@ -1,6 +1,6 @@
 class ItemSet {
-    #titleKeywords = undefined;
-    #channelNameKeywords = undefined;
+    #titleKeywords = [];
+    #channelNameKeywords = [];
     #itemFactories = [];
 
     constructor() {
