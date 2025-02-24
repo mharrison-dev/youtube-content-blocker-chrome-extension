@@ -13,15 +13,15 @@
     "content_scripts": [
         {
             "js": [
-                "scripts/items/factory/item-factory.js",
+                "scripts/item-set/item-set.js",
                 "scripts/items/item.js",
                 "scripts/items/playlist-item.js",
                 "scripts/items/short-item.js",
                 "scripts/items/home-page/home-page-playlist-item.js",
                 "scripts/items/home-page/home-page-video-item.js",
                 "scripts/items/home-page/home-page-short-item.js",
-                "scripts/content-blocker/item-set-observer/item-set-observer.js",
-                "scripts/content-blocker/item-set/item-set.js",
+                "scripts/item-set/item-set-observer.js",
+                "scripts/item-set/item-set-collection.js",
                 "scripts/keyword-persistence/keyword-persistence.js",
                 "scripts/content-blocker/content-blocker.js",
                 "scripts/pages/home-page.js"
@@ -32,13 +32,13 @@
         },
         {
             "js": [
-                "scripts/items/factory/item-factory.js",
+                "scripts/item-set/item-set.js",
                 "scripts/items/item.js",
                 "scripts/items/playlist-item.js",
                 "scripts/items/watch-page/watch-page-playlist-item.js",
                 "scripts/items/watch-page/watch-page-video-item.js",
-                "scripts/content-blocker/item-set-observer/item-set-observer.js",
-                "scripts/content-blocker/item-set/item-set.js",
+                "scripts/item-set/item-set-observer.js",
+                "scripts/item-set/item-set-collection.js",
                 "scripts/keyword-persistence/keyword-persistence.js",
                 "scripts/content-blocker/content-blocker.js",
                 "scripts/pages/watch-page.js"

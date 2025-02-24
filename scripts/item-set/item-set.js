@@ -1,4 +1,4 @@
-class ItemFactory {
+class ItemSet {
     #itemClass;
     #getItemDivs;
 

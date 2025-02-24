@@ -1,7 +1,7 @@
-class ItemSet {
+class ItemSetCollection {
     #titleKeywords = [];
     #channelNameKeywords = [];
-    #itemFactories = [];
+    #itemSets = [];
 
     constructor() {
         chrome.runtime.onMessage.addListener((keywords) => {
@@ -11,8 +11,8 @@ class ItemSet {
         });
     }
 
-    addItemFactory(itemFactory) {
-        this.#itemFactories.push(itemFactory);
+    addItemSet(itemSet) {
+        this.#itemSets.push(itemSet);
     }
 
     updateItems() {
@@ -35,8 +35,8 @@ class ItemSet {
 
     #getItems() {
         let items = [];
-        for (let itemFactory of this.#itemFactories) {
-            items.push(...itemFactory.getItems());
+        for (let itemSet of this.#itemSets) {
+            items.push(...itemSet.getItems());
         }
 
         return items;

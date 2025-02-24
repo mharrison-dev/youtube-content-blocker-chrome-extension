@@ -1,9 +1,9 @@
 class ContentBlocker {
-    #itemSet = undefined;
+    #itemSetCollection = undefined;
     #itemSetObserver = undefined;
 
     constructor() {
-        this.#itemSet = new ItemSet();
+        this.#itemSetCollection = new ItemSetCollection();
     }
 
     start() {
@@ -14,19 +14,19 @@ class ContentBlocker {
         KeywordPersistence
             .loadKeywords()
             .then((keywords) => this.#updateKeywords(keywords))
-            .then(() => this.#itemSet.updateItems());
+            .then(() => this.#itemSetCollection.updateItems());
     }
 
     #updateKeywords(keywords) {
-        this.#itemSet.setTitleKeywords(keywords.titleKeywords);
-        this.#itemSet.setChannelNameKeywords(keywords.channelNameKeywords);
+        this.#itemSetCollection.setTitleKeywords(keywords.titleKeywords);
+        this.#itemSetCollection.setChannelNameKeywords(keywords.channelNameKeywords);
     }
 
-    addItemFactory(itemFactory) {
-        this.#itemSet.addItemFactory(itemFactory);
+    observe(itemSet) {
+        this.#itemSetCollection.addItemSet(itemSet);
     }
 
     setGetItemDivs(getItemDivs) {
-        this.#itemSetObserver = new ItemSetObserver(() => this.#itemSet.updateItems(), getItemDivs);
+        this.#itemSetObserver = new ItemSetObserver(() => this.#itemSetCollection.updateItems(), getItemDivs);
     }
 }
