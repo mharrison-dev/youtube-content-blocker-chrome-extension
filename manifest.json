@@ -47,8 +47,5 @@
                 "https://www.youtube.com/watch?v=*"
             ]
         }
-    ],
-    "background": {
-        "service_worker": "scripts/installation/extension-installation.js"
-    }
+    ]
 }
