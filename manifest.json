@@ -20,10 +20,10 @@
                 "scripts/items/home-page/home-page-playlist-item.js",
                 "scripts/items/home-page/home-page-video-item.js",
                 "scripts/items/home-page/home-page-short-item.js",
-                "scripts/item-set-observer/item-set-observer.js",
-                "scripts/item-set/item-set.js",
+                "scripts/content-blocker/item-set-observer/item-set-observer.js",
+                "scripts/content-blocker/item-set/item-set.js",
                 "scripts/keyword-persistence/keyword-persistence.js",
-                "scripts/pages/content-blocker.js",
+                "scripts/content-blocker/content-blocker.js",
                 "scripts/pages/home-page.js"
             ],
             "matches": [
@@ -37,10 +37,10 @@
                 "scripts/items/playlist-item.js",
                 "scripts/items/watch-page/watch-page-playlist-item.js",
                 "scripts/items/watch-page/watch-page-video-item.js",
-                "scripts/item-set-observer/item-set-observer.js",
-                "scripts/item-set/item-set.js",
+                "scripts/content-blocker/item-set-observer/item-set-observer.js",
+                "scripts/content-blocker/item-set/item-set.js",
                 "scripts/keyword-persistence/keyword-persistence.js",
-                "scripts/pages/content-blocker.js",
+                "scripts/content-blocker/content-blocker.js",
                 "scripts/pages/watch-page.js"
             ],
             "matches": [
