@@ -55,4 +55,8 @@ class WatchPageVideoItem extends Item {
     getThumbnail() {
         return this.#videoItemDiv.querySelector('.yt-core-image');
     }
+
+    static getHTMLTag() {
+        return 'ytd-compact-video-renderer';
+    }
 }

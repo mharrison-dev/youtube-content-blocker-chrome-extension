@@ -46,7 +46,7 @@ class HomePagePlaylistItem extends PlaylistItem {
         if (!imgTag) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -71,5 +71,9 @@ class HomePagePlaylistItem extends PlaylistItem {
 
     getThumbnail() {
         return this.#playlistItemDiv.querySelector('img');
+    }
+
+    static getHTMLTag() {
+        return 'yt-lockup-view-model';
     }
 }

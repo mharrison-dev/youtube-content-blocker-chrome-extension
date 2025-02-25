@@ -71,4 +71,8 @@ class WatchPagePlaylistItem extends PlaylistItem {
     getThumbnail() {
         return this.#playlistItemDiv.querySelector('img');
     }
+
+    static getHTMLTag() {
+        return 'yt-lockup-view-model';
+    }
 }

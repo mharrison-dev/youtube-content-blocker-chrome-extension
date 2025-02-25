@@ -61,4 +61,8 @@ class Item {
     #includesSome(keywords, string) {
         return keywords.some((keyword) => string.includes(keyword));
     }
+
+    static getHTMLTag() {
+        throw new Error('Must implement "getHTMLTag" method.');
+    }
 }

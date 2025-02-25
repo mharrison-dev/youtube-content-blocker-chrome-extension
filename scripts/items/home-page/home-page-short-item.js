@@ -57,4 +57,8 @@ class HomePageShortItem extends ShortItem {
     getThumbnail() {
         return this.#shortItemDiv.querySelector('img');
     }
+
+    static getHTMLTag() {
+        return 'ytm-shorts-lockup-view-model';
+    }
 }

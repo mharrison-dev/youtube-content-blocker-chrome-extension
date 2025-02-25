@@ -71,4 +71,8 @@ class HomePageVideoItem extends Item {
     getThumbnail() {
         return this.#videoItemDiv.querySelector('img');
     }
+
+    static getHTMLTag() {
+        return 'ytd-rich-grid-media';
+    }
 }

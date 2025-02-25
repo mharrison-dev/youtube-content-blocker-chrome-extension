@@ -1,10 +1,8 @@
 class ItemSet {
     #itemClass;
-    #getItemDivs;
 
-    constructor(itemClass, getItemDivs) {
+    constructor(itemClass) {
         this.#itemClass = itemClass;
-        this.#getItemDivs = getItemDivs;
     }
 
     getItems() {
@@ -18,5 +16,10 @@ class ItemSet {
         }
 
         return items;
+    }
+
+    #getItemDivs() {
+        let targetTagName = this.#itemClass.getHTMLTag();
+        return document.getElementsByTagName(targetTagName);
     }
 }
