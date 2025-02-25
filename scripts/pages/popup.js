@@ -1,56 +1,70 @@
-// Document Elements
-let titleKeywordEntry = document.getElementById('title-keywords');
-let channelNameKeywordEntry = document.getElementById('channel-name-keywords');
-let saveButton = document.getElementById('save-button');
+class Popup {
+    start() {
+        this.#loadKeywords();
+        this.#setupSaveButton();
+    }
 
-// Keyword Saving Logic
-saveButton.addEventListener('click', function saveKeywords() {
-    let titleKeywords = extractKeywords(titleKeywordEntry.value);
-    let channelNameKeywords = extractKeywords(channelNameKeywordEntry.value);
-    KeywordPersistence
-        .save(titleKeywords, channelNameKeywords)
-        .then(sendNotificationAboutLocalStorageUpdate);
+    #setupSaveButton() {
+        let saveButton = document.getElementById('save-button');
+        saveButton.addEventListener('click', () => {
+            let keywords = this.#getKeywordsFromEntries();
+            KeywordPersistence
+                .save(keywords.titleKeywords, keywords.channelNameKeywords)
+                .then(() => this.#sendNotificationAboutLocalStorageUpdate());
+        });
+    }
 
-    function extractKeywords(string) {
+    #sendNotificationAboutLocalStorageUpdate() {
+        chrome.tabs
+            .query({ url: ['https://www.youtube.com/watch?v=*', 'https://www.youtube.com/'] })
+            .then((tabs) => {
+                if (tabs) {
+                    for (let tab of tabs) {
+                        chrome.tabs.sendMessage(tab.id, this.#getKeywordsFromEntries());
+                    }
+                }
+            });
+    }
+
+    #getKeywordsFromEntries() {
+        let titleKeywordEntry = document.getElementById('title-keywords');
+        let titleKeywords = this.#getKeywordsFromEntry(titleKeywordEntry);
+
+        let channelNameKeywordEntry = document.getElementById('channel-name-keywords');
+        let channelNameKeywords = this.#getKeywordsFromEntry(channelNameKeywordEntry);
+
+        let keywords = { titleKeywords: titleKeywords, channelNameKeywords: channelNameKeywords };
+        return keywords;
+    }
+
+    #getKeywordsFromEntry(entry) {
         let emptyStringRegex = /^\s*$/;
-        if (emptyStringRegex.test(string)) {
+        if (emptyStringRegex.test(entry.value)) {
             return [];
         }
 
-        let keywords = string
+        let keywords = entry.value
             .split(',')
             .map((keyword) => keyword.trim());
 
         return keywords;
     }
 
-    function sendNotificationAboutLocalStorageUpdate() {
-        chrome.tabs
-            .query({ url: ['https://www.youtube.com/watch?v=*', 'https://www.youtube.com/'] })
-            .then((tabs) => {
-                if (tabs) {
-                    for (let tab of tabs) {
-                        chrome.tabs.sendMessage(tab.id,
-                            {
-                                titleKeywords: extractKeywords(titleKeywordEntry.value),
-                                channelNameKeywords: extractKeywords(channelNameKeywordEntry.value)
-                            });
-                    }
-                }
-            });
+    #loadKeywords() {
+        KeywordPersistence
+            .loadKeywords()
+            .then((keywords) => this.#addKeywordsToEntries(keywords));
     }
-});
 
-// Keyword Loading Logic
-function loadKeywords() {
-    KeywordPersistence
-        .loadKeywords()
-        .then((keywords) => {
-            addKeywordsToEntry(keywords.titleKeywords, titleKeywordEntry);
-            addKeywordsToEntry(keywords.channelNameKeywords, channelNameKeywordEntry);
-        });
+    #addKeywordsToEntries(keywords) {
+        let titleKeywordEntry = document.getElementById('title-keywords');
+        this.#addKeywordsToEntry(keywords.titleKeywords, titleKeywordEntry);
 
-    function addKeywordsToEntry(keywords, entry) {
+        let channelNameKeywordEntry = document.getElementById('channel-name-keywords');
+        this.#addKeywordsToEntry(keywords.channelNameKeywords, channelNameKeywordEntry);
+    }
+
+    #addKeywordsToEntry(keywords, entry) {
         for (let i = 0; i < keywords.length; i++) {
             entry.value += keywords[i];
             if (i < keywords.length - 1) {
@@ -60,5 +74,5 @@ function loadKeywords() {
     }
 }
 
-// Main Logic
-loadKeywords();
+let popup = new Popup();
+popup.start();
