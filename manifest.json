@@ -15,6 +15,7 @@
             "js": [
                 "scripts/item-set/item-set.js",
                 "scripts/items/item.js",
+                "scripts/items/video-item.js",
                 "scripts/items/playlist-item.js",
                 "scripts/items/short-item.js",
                 "scripts/items/home-page/home-page-playlist-item.js",
@@ -34,6 +35,7 @@
             "js": [
                 "scripts/item-set/item-set.js",
                 "scripts/items/item.js",
+                "scripts/items/video-item.js",
                 "scripts/items/playlist-item.js",
                 "scripts/items/watch-page/watch-page-playlist-item.js",
                 "scripts/items/watch-page/watch-page-video-item.js",

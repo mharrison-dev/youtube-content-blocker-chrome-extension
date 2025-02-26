@@ -6,6 +6,26 @@ class ShortItem extends Item {
         }
     }
 
+    static getHTMLTag() {
+        throw new Error('Must implement "getHTMLTag" method.');
+    }
+
+    getTitle() {
+        throw new Error('Must implement "getTitle" method.');
+    }
+
+    getTitleContainer() {
+        throw new Error('Must implement "getTitleContainer" method.');
+    }
+
+    getChannelName() {
+        throw new Error('Must implement "getChannelName" method.');
+    }
+
+    getThumbnail() {
+        throw new Error('Must implement "getThumbnail" method.');
+    }
+
     showThumbnail() {
         let thumbnailImg = this.getThumbnail();
         thumbnailImg.removeAttribute('style');

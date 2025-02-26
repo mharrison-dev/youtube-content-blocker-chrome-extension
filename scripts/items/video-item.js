@@ -1,8 +1,8 @@
-class PlaylistItem extends Item {
+class VideoItem extends Item {
     constructor() {
         super();
-        if (new.target === PlaylistItem) {
-            throw new Error('Cannot instantiate abstract class PlaylistItem directly.');
+        if (new.target === VideoItem) {
+            throw new Error('Cannot instantiate abstract class VideoItem directly.');
         }
     }
 
@@ -24,15 +24,5 @@ class PlaylistItem extends Item {
 
     getThumbnail() {
         throw new Error('Must implement "getThumbnail" method.');
-    }
-    
-    showThumbnail() { 
-        let thumbnailImg = this.getThumbnail();
-        thumbnailImg.removeAttribute('style');
-    }
-
-    isShowingThumbnail() { 
-        let thumbnailImg = this.getThumbnail();
-        return thumbnailImg.getAttribute('style') === null;
     }
 }
