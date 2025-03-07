@@ -16,7 +16,7 @@ class Popup {
 
     #sendNotificationAboutLocalStorageUpdate() {
         chrome.tabs
-            .query({ url: ['https://www.youtube.com/watch?v=*', 'https://www.youtube.com/'] })
+            .query({ url: ['https://www.youtube.com/watch?v=*', 'https://www.youtube.com/', 'https://www.youtube.com/feed/subscriptions'] })
             .then((tabs) => {
                 if (tabs) {
                     for (let tab of tabs) {

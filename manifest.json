@@ -48,6 +48,22 @@
             "matches": [
                 "https://www.youtube.com/watch?v=*"
             ]
+        },
+        {
+            "js": [
+                "scripts/item-set/item-set.js",
+                "scripts/items/item.js",
+                "scripts/items/video-item.js",
+                "scripts/items/subscription-page/subscription-page-video-item.js",
+                "scripts/item-set/item-set-observer.js",
+                "scripts/item-set/item-set-collection.js",
+                "scripts/keyword-persistence/keyword-persistence.js",
+                "scripts/content-blocker/content-blocker.js",
+                "scripts/pages/subscription-page.js"
+            ],
+            "matches": [
+                "https://www.youtube.com/feed/subscriptions"
+            ]
         }
     ]
 }
