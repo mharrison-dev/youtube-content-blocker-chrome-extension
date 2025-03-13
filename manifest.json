@@ -14,13 +14,13 @@
         {
             "js": [
                 "scripts/item-set/item-set.js",
+                "scripts/item-set/video-item-set.js",
+                "scripts/item-set/playlist-item-set.js",
+                "scripts/item-set/short-item-set.js",
                 "scripts/items/item.js",
                 "scripts/items/video-item.js",
                 "scripts/items/playlist-item.js",
                 "scripts/items/short-item.js",
-                "scripts/items/home-page/home-page-playlist-item.js",
-                "scripts/items/home-page/home-page-video-item.js",
-                "scripts/items/home-page/home-page-short-item.js",
                 "scripts/item-set/item-set-observer.js",
                 "scripts/item-set/item-set-collection.js",
                 "scripts/keyword-persistence/keyword-persistence.js",
@@ -34,11 +34,12 @@
         {
             "js": [
                 "scripts/item-set/item-set.js",
+                "scripts/item-set/video-item-set.js",
+                "scripts/item-set/playlist-item-set.js",
+                "scripts/item-set/short-item-set.js",
                 "scripts/items/item.js",
                 "scripts/items/video-item.js",
                 "scripts/items/playlist-item.js",
-                "scripts/items/watch-page/watch-page-playlist-item.js",
-                "scripts/items/watch-page/watch-page-video-item.js",
                 "scripts/item-set/item-set-observer.js",
                 "scripts/item-set/item-set-collection.js",
                 "scripts/keyword-persistence/keyword-persistence.js",
@@ -52,11 +53,12 @@
         {
             "js": [
                 "scripts/item-set/item-set.js",
+                "scripts/item-set/video-item-set.js",
+                "scripts/item-set/playlist-item-set.js",
+                "scripts/item-set/short-item-set.js",
                 "scripts/items/item.js",
                 "scripts/items/video-item.js",
                 "scripts/items/short-item.js",
-                "scripts/items/subscription-page/subscription-page-video-item.js",
-                "scripts/items/subscription-page/subscription-page-short-item.js",
                 "scripts/item-set/item-set-observer.js",
                 "scripts/item-set/item-set-collection.js",
                 "scripts/keyword-persistence/keyword-persistence.js",

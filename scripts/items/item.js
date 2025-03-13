@@ -1,51 +1,70 @@
 class Item {
-    constructor() {
+    #itemDiv;
+    #titlePath;
+    #titleContainerPath;
+    #channelNamePath;
+    #thumbnailPath;
+
+    constructor(itemDiv, titlePath, titleContainerPath, channelNamePath, thumbnailPath) {
         if (new.target === Item) {
             throw new Error('Cannot instantiate abstract class Item directly.');
         }
+
+        this.#itemDiv = itemDiv;
+        this.#titlePath = titlePath;
+        this.#titleContainerPath = titleContainerPath;
+        this.#channelNamePath = channelNamePath;
+        this.#thumbnailPath = thumbnailPath;
     }
 
-    hideTitle() {
-        this.#setRenderedTitle('BLOCKED');
+    getTitle() {
+        let [selectorPath, attribute] = this.#titlePath.split('>>').map(string => string.trim());
+        let selectedElement = this.#itemDiv.querySelector(selectorPath);
+        if (selectedElement) {
+            return selectedElement.getAttribute(attribute);
+        }
     }
 
-    showTitle() {
-        let title = this.getTitle();
-        this.#setRenderedTitle(title);
+    getTitleContainer() {
+        return this.#itemDiv.querySelector(this.#titleContainerPath);
     }
 
-    hideThumbnail() {
-        let thumbnailImg = this.getThumbnail();
-        thumbnailImg.style.display = 'none';
+    getChannelName() {
+        if (!this.#channelNamePath) {
+            return null;
+        }
+
+        if (this.#channelNamePath.includes('>>>')) {
+            let [selectorPath, property] = this.#channelNamePath.split('>>>').map(string => string.trim());
+            let selectedElement = this.#itemDiv.querySelector(selectorPath);
+            if (selectedElement && property === "innerText") {
+                return selectedElement.innerText;
+            }
+        } else {
+            let [selectorPath, attribute] = this.#channelNamePath.split('>>').map(string => string.trim());
+            let selectedElement = this.#itemDiv.querySelector(selectorPath);
+            if (selectedElement) {
+                return selectedElement.getAttribute(attribute);
+            }
+        }
     }
 
-    showThumbnail() {
-        let thumbnailImg = this.getThumbnail();
-        thumbnailImg.style.removeProperty('display');
+    getThumbnail() {
+        return this.#itemDiv.querySelector(this.#thumbnailPath);
     }
 
-    isHiddingTitle() {
-        return !this.isShowingTitle();
+    hide() {
+        this.getThumbnail().setAttribute('style', 'display: none');
+        this.getTitleContainer().innerText = 'BLOCKED';
     }
 
-    isShowingTitle() {
-        let title = this.getTitle().replace(/\s*/g, '');
-        let displayedTitle = this.getTitleContainer().innerText.replace(/\s*/g, '');
-        return title === displayedTitle;
+    show() {
+        this.getThumbnail().removeAttribute('style');
+        this.getTitleContainer().innerText = this.getTitle();
     }
 
-    isHiddingThumbnail() {
-        return !this.isShowingThumbnail();
-    }
-
-    isShowingThumbnail() {
-        let thumbnailImg = this.getThumbnail();
-        return !thumbnailImg.getAttribute('style').includes('display');
-    }
-
-    #setRenderedTitle(string) {
-        let titleContainer = this.getTitleContainer();
-        titleContainer.innerHTML = string;
+    isHidden() {
+        return this.getTitleContainer().innerText === 'BLOCKED';
     }
 
     includesSomeKeywordsInTitle(keywords) {
@@ -54,31 +73,19 @@ class Item {
     }
 
     includesSomeKeywordsInChannelName(keywords) {
+        if (this.getChannelName() == null) {
+            return false;
+        }
+
         let channelName = this.getChannelName();
         return this.#includesSome(keywords, channelName);
     }
 
     #includesSome(keywords, string) {
+        if (!string) {
+            return false;
+        }
+
         return keywords.some((keyword) => string.includes(keyword));
-    }
-
-    static getHTMLTag() {
-        throw new Error('Must implement "getHTMLTag" method.');
-    }
-
-    getTitle() {
-        throw new Error('Must implement "getTitle" method.');
-    }
-
-    getTitleContainer() {
-        throw new Error('Must implement "getTitleContainer" method.');
-    }
-
-    getChannelName() {
-        throw new Error('Must implement "getChannelName" method.');
-    }
-
-    getThumbnail() {
-        throw new Error('Must implement "getThumbnail" method.');
     }
 }

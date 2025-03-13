@@ -1,38 +1,44 @@
 class PlaylistItem extends Item {
-    constructor() {
-        super();
-        if (new.target === PlaylistItem) {
-            throw new Error('Cannot instantiate abstract class PlaylistItem directly.');
+    constructor(itemDiv, titlePath, titleContainerPath, channelNamePath, thumbnailPath) {
+        super(itemDiv, titlePath, titleContainerPath, channelNamePath, thumbnailPath);
+
+        let title = this.getTitle();
+        if (title == null || title === "") {
+            throw new Error('Cannot instantiate PlaylistItem with an invalid title.');
+        }
+
+        let titleContainer = this.getTitleContainer();
+        if (titleContainer == null) {
+            throw new Error('Cannot instantiate PlaylistItem with an invalid title container.');
+        }
+
+        let channelName = this.getChannelName();
+        if (channelName == null || channelName === "") {
+            throw new Error('Cannot instantiate PlaylistItem with an invalid channel name.');
+        }
+
+        let thumbnail = this.getThumbnail();
+        if (thumbnail == null) {
+            throw new Error('Cannot instantiate PlaylistItem with an invalid thumbnail.');
         }
     }
 
-    static getHTMLTag() {
-        throw new Error('Must implement "getHTMLTag" method.');
+    hide() {
+        this.getThumbnail().setAttribute('style', 'display: none');
+        this.getTitleContainer().innerText = 'BLOCKED';
     }
 
-    getTitle() {
-        throw new Error('Must implement "getTitle" method.');
+    show() {
+        this.getThumbnail().removeAttribute('style');
+        this.getTitleContainer().innerText = this.getTitle();
     }
 
-    getTitleContainer() {
-        throw new Error('Must implement "getTitleContainer" method.');
-    }
+    isHidden() {
+        let styleAttribute = this.getThumbnail().getAttribute('style');
+        if (styleAttribute === null) {
+            return false;
+        }
 
-    getChannelName() {
-        throw new Error('Must implement "getChannelName" method.');
-    }
-
-    getThumbnail() {
-        throw new Error('Must implement "getThumbnail" method.');
-    }
-    
-    showThumbnail() { 
-        let thumbnailImg = this.getThumbnail();
-        thumbnailImg.removeAttribute('style');
-    }
-
-    isShowingThumbnail() { 
-        let thumbnailImg = this.getThumbnail();
-        return thumbnailImg.getAttribute('style') === null;
+        return styleAttribute.includes('display: none') && this.getTitleContainer().innerText === 'BLOCKED';
     }
 }

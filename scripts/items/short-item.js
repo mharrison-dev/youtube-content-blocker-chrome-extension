@@ -1,42 +1,44 @@
 class ShortItem extends Item {
-    constructor() {
-        super();
-        if (new.target === ShortItem) {
-            throw new Error('Cannot instantiate abstract class ShortItem directly.');
+    constructor(itemDiv, titlePath, titleContainerPath, thumbnailPath) {
+        super(itemDiv, titlePath, titleContainerPath, null, thumbnailPath);
+
+        let title = this.getTitle();
+        if (title == null || title === '') {
+            throw new Error('Cannot instantiate ShortItem with an invalid title.');
+        }
+
+        let titleContainer = this.getTitleContainer();
+        if (titleContainer == null) {
+            throw new Error('Cannot instantiate ShortItem with an invalid title container.');
+        }
+
+        let channelName = this.getChannelName();
+        if (channelName != null) {
+            throw new Error('Cannot instantiate ShortItem with an invalid channel name.');
+        }
+
+        let thumbnail = this.getThumbnail();
+        if (thumbnail == null) {
+            throw new Error('Cannot instantiate ShortItem with an invalid thumbnail.');
         }
     }
 
-    static getHTMLTag() {
-        throw new Error('Must implement "getHTMLTag" method.');
+    hide() {
+        this.getThumbnail().setAttribute('style', 'display: none');
+        this.getTitleContainer().innerText = 'BLOCKED';
     }
 
-    getTitle() {
-        throw new Error('Must implement "getTitle" method.');
+    show() {
+        this.getThumbnail().removeAttribute('style');
+        this.getTitleContainer().innerText = this.getTitle();
     }
 
-    getTitleContainer() {
-        throw new Error('Must implement "getTitleContainer" method.');
-    }
+    isHidden() {
+        let styleAttribute = this.getThumbnail().getAttribute('style');
+        if (styleAttribute === null) {
+            return false;
+        }
 
-    getChannelName() {
-        throw new Error('Must implement "getChannelName" method.');
-    }
-
-    getThumbnail() {
-        throw new Error('Must implement "getThumbnail" method.');
-    }
-
-    showThumbnail() {
-        let thumbnailImg = this.getThumbnail();
-        thumbnailImg.removeAttribute('style');
-    }
-
-    isShowingThumbnail() {
-        let thumbnailImg = this.getThumbnail();
-        return thumbnailImg.getAttribute('style') === null;
-    }
-
-    includesSomeKeywordsInChannelName(keywords) {
-        return false;
+        return styleAttribute.includes('display: none') && this.getTitleContainer().innerText === 'BLOCKED';
     }
 }
