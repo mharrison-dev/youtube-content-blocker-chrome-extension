@@ -22,8 +22,6 @@ let homePageShortSet = new ShortItemSetBuilder()
     .build();
 
 let contentBlocker = new ContentBlocker();
-contentBlocker.observe(homePageVideoSet);
-contentBlocker.observe(homePagePlaylistSet);
-contentBlocker.observe(homePageShortSet);
-contentBlocker.setGetItemDivs(() => document.getElementById('contents'));
-contentBlocker.start(); 
+contentBlocker.manage(homePageVideoSet);
+contentBlocker.manage(homePagePlaylistSet);
+contentBlocker.manage(homePageShortSet);

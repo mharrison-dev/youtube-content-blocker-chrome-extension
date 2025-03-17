@@ -15,7 +15,5 @@ let watchPagePlaylistSet = new PlaylistItemSetBuilder()
     .build();
 
 let contentBlocker = new ContentBlocker();
-contentBlocker.observe(watchPageVideoSet);
-contentBlocker.observe(watchPagePlaylistSet);
-contentBlocker.setGetItemDivs(() => document.getElementById('related'));
-contentBlocker.start();
+contentBlocker.manage(watchPageVideoSet);
+contentBlocker.manage(watchPagePlaylistSet);

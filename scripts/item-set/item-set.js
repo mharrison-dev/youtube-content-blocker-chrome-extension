@@ -1,8 +1,17 @@
 class ItemSet {
-    constructor() {
-    }
+    #itemSetMutationObserver;
 
-    getItems() { }
+    constructor() { }
+
+    onUpdate(callback) {
+        let bodyTag = document.getElementsByTagName('body')[0];
+        let config = { attributes: true, subtree: true };
+        this.#itemSetMutationObserver = new MutationObserver(() => {
+            let itemDivs = this.getItems();
+            callback(itemDivs);
+        });
+        this.#itemSetMutationObserver.observe(bodyTag, config);
+    }
 
     getItemDivs(itemSetPath) {
         let itemDivs = [];

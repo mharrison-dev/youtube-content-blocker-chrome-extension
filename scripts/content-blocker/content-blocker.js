@@ -1,32 +1,40 @@
 class ContentBlocker {
-    #itemSetCollection = undefined;
-    #itemSetObserver = undefined;
+    #prohibitedTitleKeywords = [];
+    #prohibitedChannelNameKeywords = [];
+    #managedItemSets = [];
 
     constructor() {
-        this.#itemSetCollection = new ItemSetCollection();
+        chrome.runtime.onMessage.addListener((keywords) => {
+            this.#prohibitedTitleKeywords = keywords.titleKeywords;
+            this.#prohibitedChannelNameKeywords = keywords.channelNameKeywords;
+            for (let itemSet of this.#managedItemSets) {
+                let items = itemSet.getItems();
+                this.#update(items);
+            }
+        });
     }
 
-    start() {
-        if (!this.#itemSetObserver) {
-            throw new Error('Cannot start content blocker before setting "getItemDivs."');
+    manage(itemSet) {
+        this.#managedItemSets.push(itemSet);
+        itemSet.onUpdate((items) => this.#update(items));
+    }
+
+    #update(items) {
+        for (let item of items) {
+            if (this.#shouldHide(item)) {
+                if (!item.isHidden()) {
+                    item.hide();
+                }
+            } else {
+                if (item.isHidden()) {
+                    item.show();
+                }
+            }
         }
-
-        KeywordPersistence
-            .loadKeywords()
-            .then((keywords) => this.#updateKeywords(keywords))
-            .then(() => this.#itemSetCollection.updateItems());
     }
 
-    #updateKeywords(keywords) {
-        this.#itemSetCollection.setTitleKeywords(keywords.titleKeywords);
-        this.#itemSetCollection.setChannelNameKeywords(keywords.channelNameKeywords);
-    }
-
-    observe(itemSet) {
-        this.#itemSetCollection.addItemSet(itemSet);
-    }
-
-    setGetItemDivs(getItemDivs) {
-        this.#itemSetObserver = new ItemSetObserver(() => this.#itemSetCollection.updateItems(), getItemDivs);
+    #shouldHide(item) {
+        return item.includesSomeKeywordsInTitle(this.#prohibitedTitleKeywords)
+            || item.includesSomeKeywordsInChannelName(this.#prohibitedChannelNameKeywords)
     }
 }

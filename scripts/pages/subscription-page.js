@@ -14,7 +14,5 @@ let subscriptionPageShortSet = new ShortItemSetBuilder()
     .build();
 
 let contentBlocker = new ContentBlocker();
-contentBlocker.observe(subscriptionPageVideoSet);
-contentBlocker.observe(subscriptionPageShortSet);
-contentBlocker.setGetItemDivs(() => document.getElementById('contents'));
-contentBlocker.start();
+contentBlocker.manage(subscriptionPageVideoSet);
+contentBlocker.manage(subscriptionPageShortSet);
