@@ -1,47 +1,73 @@
 class ItemSet {
     #itemSetMutationObserver;
 
-    constructor() { }
+    constructor() { 
+        if (new.target === ItemSet) {
+            throw new Error('Cannot instantiate abstract class ItemSet directly.');
+        }
+    }
 
     onUpdate(callback) {
+        let passItemsIntoCallback = () => {
+            let items = this.getItems();
+            callback(items);
+        };
+
+        this.#setUpMutationObserver(passItemsIntoCallback);
+    }
+
+    #setUpMutationObserver(callback) {
         let bodyTag = document.getElementsByTagName('body')[0];
         let config = { attributes: true, subtree: true };
-        this.#itemSetMutationObserver = new MutationObserver(() => {
-            let itemDivs = this.getItems();
-            callback(itemDivs);
-        });
+        this.#itemSetMutationObserver = new MutationObserver(callback);
         this.#itemSetMutationObserver.observe(bodyTag, config);
     }
 
     getItemDivs(itemSetPath) {
-        let itemDivs = [];
-
         if (itemSetPath.endsWith('*')) {
-            let selectorPath = itemSetPath.slice(0, -1);
-            let itemDivSets = document.querySelectorAll(selectorPath);
-            for (let itemDivSet of itemDivSets) {
-                for (let itemDiv of itemDivSet.children) {
-                    itemDivs.push(itemDiv);
-                }
-            }
+            return this.#getChildElementsFromAllParentElements(itemSetPath);
         } else if (itemSetPath.includes('?>')) {
-            let itemDivSet = null;
-            let longerPath = itemSetPath.replace('?>', '>');
-            itemDivSet = document.querySelector(longerPath);
-            if (itemDivSet === null) {
-                let shorterPath = itemSetPath.substring(0, itemSetPath.indexOf('?>')).trim();
-                itemDivSet = document.querySelector(shorterPath);
-            }
-            if (itemDivSet) {
-                itemDivs = itemDivSet.children;
-            }
+            return this.#getChildElementsFromFragilePath(itemSetPath);
         } else {
-            let itemDivSet = document.querySelector(itemSetPath);
-            if (itemDivSet) {
-                itemDivs = itemDivSet.children;
+            return this.#getChildElements(itemSetPath);
+        }
+    }
+
+    #getChildElementsFromAllParentElements(parentElementPath) {
+        let childElements = [];
+        let parentElementPathWithoutMarker = parentElementPath.slice(0, -1);
+        let parentElements = document.querySelectorAll(parentElementPathWithoutMarker);
+        for (let parentElement of parentElements) {
+            for (let childElement of parentElement.children) {
+                childElements.push(childElement);
             }
         }
 
-        return itemDivs;
+        return childElements;
+    }
+
+    #getChildElementsFromFragilePath(parentElementPath) {
+        let completePath = parentElementPath.replace('?>', '>');
+        let parentElementFromCompletePath = document.querySelector(completePath);
+        if (parentElementFromCompletePath) {
+            return parentElementFromCompletePath.children;
+        }
+
+        let incompletePath = parentElementPath.substring(0, parentElementPath.indexOf('?>')).trim();
+        let parentElementFromIncompletePath = document.querySelector(incompletePath);
+        if (parentElementFromIncompletePath) {
+            return parentElementFromIncompletePath.children;
+        }
+
+        return [];
+    }
+
+    #getChildElements(parentElementPath) {
+        let parentElement = document.querySelector(parentElementPath);
+        if (parentElement) {
+            return parentElement.children;
+        }
+
+        return [];
     }
 }
