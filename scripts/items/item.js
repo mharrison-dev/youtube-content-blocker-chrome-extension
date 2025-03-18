@@ -66,26 +66,4 @@ class Item {
     isHidden() {
         return this.getTitleContainer().innerText === 'BLOCKED';
     }
-
-    includesSomeKeywordsInTitle(keywords) {
-        let title = this.getTitle();
-        return this.#includesSome(keywords, title);
-    }
-
-    includesSomeKeywordsInChannelName(keywords) {
-        if (this.getChannelName() == null) {
-            return false;
-        }
-
-        let channelName = this.getChannelName();
-        return this.#includesSome(keywords, channelName);
-    }
-
-    #includesSome(keywords, string) {
-        if (!string) {
-            return false;
-        }
-
-        return keywords.some((keyword) => string.includes(keyword));
-    }
 }
