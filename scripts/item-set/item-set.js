@@ -1,10 +1,13 @@
 class ItemSet {
+    #itemSetPath;
     #itemSetMutationObserver;
 
-    constructor() { 
+    constructor(itemSetPath) {
         if (new.target === ItemSet) {
             throw new Error('Cannot instantiate abstract class ItemSet directly.');
         }
+
+        this.#itemSetPath = itemSetPath;
     }
 
     onUpdate(callback) {
@@ -23,13 +26,28 @@ class ItemSet {
         this.#itemSetMutationObserver.observe(bodyTag, config);
     }
 
-    getItemDivs(itemSetPath) {
-        if (itemSetPath.endsWith('*')) {
-            return this.#getChildElementsFromAllParentElements(itemSetPath);
-        } else if (itemSetPath.includes('?>')) {
-            return this.#getChildElementsFromFragilePath(itemSetPath);
+    getItems() {
+        let items = [];
+        let itemDivs = this.#getItemDivs();
+        for (let itemDiv of itemDivs) {
+            try {
+                let item = this.createItem(itemDiv);
+                items.push(item);
+            } catch (error) {
+                continue;
+            }
+        }
+
+        return items;
+    }
+
+    #getItemDivs() {
+        if (this.#itemSetPath.endsWith('*')) {
+            return this.#getChildElementsFromAllParentElements(this.#itemSetPath);
+        } else if (this.#itemSetPath.includes('?>')) {
+            return this.#getChildElementsFromFragilePath(this.#itemSetPath);
         } else {
-            return this.#getChildElements(itemSetPath);
+            return this.#getChildElements(this.#itemSetPath);
         }
     }
 
