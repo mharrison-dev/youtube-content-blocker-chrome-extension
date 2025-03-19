@@ -58,12 +58,12 @@ class Item {
         this.getTitleContainer().innerText = 'BLOCKED';
     }
 
-    show() {
-        this.getThumbnail().removeAttribute('style');
-        this.getTitleContainer().innerText = this.getTitle();
-    }
-
     isHidden() {
-        return this.getTitleContainer().innerText === 'BLOCKED';
+        let styleAttribute = this.getThumbnail().getAttribute('style');
+        if (styleAttribute === null) {
+            return false;
+        }
+
+        return styleAttribute.includes('display: none') && this.getTitleContainer().innerText === 'BLOCKED';
     }
 }

@@ -23,23 +23,9 @@ class VideoItem extends Item {
         }
     }
 
-    hide() {
-        this.getThumbnail().setAttribute('style', 'display: none');
-        this.getTitleContainer().innerText = 'BLOCKED';
-    }
-
     show() {
         this.getThumbnail().removeAttribute('style');
         this.getThumbnail().setAttribute('style', 'background-color: transparent');
         this.getTitleContainer().innerText = this.getTitle();
-    }
-
-    isHidden() {
-        let styleAttribute = this.getThumbnail().getAttribute('style');
-        if (styleAttribute === null) {
-            return false;
-        }
-
-        return styleAttribute.includes('display: none') && this.getTitleContainer().innerText === 'BLOCKED';
     }
 }
