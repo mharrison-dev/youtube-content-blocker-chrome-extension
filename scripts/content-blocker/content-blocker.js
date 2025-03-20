@@ -5,13 +5,21 @@ class ContentBlocker {
 
     constructor() {
         chrome.runtime.onMessage.addListener((keywords) => {
-            this.#prohibitedTitleKeywords = keywords.titleKeywords;
-            this.#prohibitedChannelNameKeywords = keywords.channelNameKeywords;
-            for (let itemSet of this.#managedItemSets) {
-                let items = itemSet.getItems();
-                this.#update(items);
-            }
+            this.#updateProhibitedKeywords(keywords);
+            this.#updateEachManagedtemSet();
         });
+    }
+
+    #updateProhibitedKeywords(keywords) {
+        this.#prohibitedTitleKeywords = keywords.titleKeywords;
+        this.#prohibitedChannelNameKeywords = keywords.channelNameKeywords;
+    }
+
+    #updateEachManagedtemSet() {
+        for (let itemSet of this.#managedItemSets) {
+            let items = itemSet.getItems();
+            this.#update(items);
+        }
     }
 
     manage(itemSet) {
@@ -22,18 +30,24 @@ class ContentBlocker {
     #update(items) {
         for (let item of items) {
             if (this.#shouldHide(item)) {
-                if (!item.isHidden()) {
-                    item.hide();
-                }
-            } else {
-                if (item.isHidden()) {
-                    item.show();
-                }
+                item.hide();
+            } else if (this.#shouldShow(item)) {
+                item.show();
             }
         }
     }
 
     #shouldHide(item) {
+        return item.isDisplayed()
+            && this.#foundSomeProhibitedKeywords(item);
+    }
+
+    #shouldShow(item) {
+        return item.isHidden()
+            && !this.#foundSomeProhibitedKeywords(item);
+    }
+
+    #foundSomeProhibitedKeywords(item) {
         return this.#foundSomeProhibitedTitleKeywords(item)
             || this.#foundSomeProhibitedChannelNameKeywords(item);
     }

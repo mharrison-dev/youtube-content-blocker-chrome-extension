@@ -66,4 +66,8 @@ class Item {
 
         return styleAttribute.includes('display: none') && this.getTitleContainer().innerText === 'BLOCKED';
     }
+
+    isDisplayed() {
+        return !this.isHidden();
+    }
 }
